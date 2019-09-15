@@ -10,6 +10,12 @@ body {
   color: #868e96;
 }
 
+@media screen and (min-width:0px) and (max-width: 600px;){
+  .center-min{
+    text-align: center;
+  }
+}
+
 @media (min-width: 992px) {
   body {
     padding-top: 0;
