@@ -1,2 +1,2 @@
 Personal Website
-[Website Link](https://www.aghilan.me)
+[Website Link](https://aghilan.me)
