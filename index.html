@@ -10,7 +10,6 @@
 
     <meta name="description" content="Aghilan Baskar is a Software Engineer & Full Stack developer who have deep knoweddge in Web development">
     <meta name="author" content="Aghilan Baskar">
-    <meta name="theme-color" content="#fcba03">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -60,13 +59,13 @@
     <!-- Main Container -->
     <div class="container vh-100">
         <div class="row main_row ">
-            <div class="col-9">
+            <div class="col-md-9 col-12">
             <h2 class="text-white">Hello, I'm</h2>
             <h1 class="text-primary m-heading">Aghilan Baskar</h1>
-            <h2 class="typing">Software Engineer & Full Stack Developer.</h2>
+            <h2 class="text-warning"><span id='typing'></span><span class="blinking-cursor">|</span></h2>
             </div>
-            <div class="col-3">
-            <img src="./assets/img/profile.jpg" class="h-auto d-inline-block avatar-img img-thumbnail rounded-circle border border-4 border-body"/>
+            <div class="col-md-3 col-12  d-md-block d-none">
+            <img src="./assets/img/profile.jpg" alt="profile picture" class="h-auto d-inline-block avatar-img img-thumbnail rounded-circle border border-4 border-body"/>
             </div>
         </div>
     </div>
@@ -75,13 +74,13 @@
     <div id="about" class="container about p-5">
         <div class="row">
             <div class="col-md-6 col-12">
-              <img src="./assets/img/about_img.svg" class="img-fluid" />
+              <img src="./assets/img/about_img.svg" alt="about img" class="img-fluid" />
             </div>
             <div class="col-md-6 col-12 pl-md-5 pl-0 pt-5 pb-md-5 pb-0 text-white text-justify">
               <h3 class="text-warning">About Me</h3>
               <h1 class="m-heading">A little bit about me</h1>
               <p>
-                A passionate Software Engineer working in the software industry for the past <b class="text-warning">2 years</b> on the latest technology. who understands how frontend & backend works.
+                A passionate Software Engineer working in the software industry for the past <b class="text-warning">2 years</b> on the latest technology. Experienced in Fullstack development, Cloud Computing and worked on API.
               </p>
               <p>Worked mostly on <b class="text-warning">NodeJS & PHP</b> as backend. <b class="text-warning">Postgresql, MySQL & MongoDB</b> as DBMS. <b class="text-warning">Bootstrap, Vuetify, jquery & vueJs</b> as frontend.</p>
               <p>Hands-on in the cloud where I <b class="text-warning">managed & configured DNS records in Cloudflare</b> and enabling <b class="text-warning">SSL certificate for domains</b> and installing & managing required packages & tools in the VM for the web app.</p>
@@ -99,7 +98,6 @@
             <img
               src="./assets/img/gradskey.svg"
               class="card-img-top"
-              style="height: 13rem;"
               alt="Gradskey Logo"
             />
             <div class="card-body">
@@ -115,8 +113,7 @@
           <div class="card">
             <img
               src="./assets/img/diab.jpg"
-              class="card-img-top"
-              style="height: 13rem;"
+              class="card-img-top px-5"
               alt="Diabwellness Logo"
             />
             <div class="card-body">
@@ -131,8 +128,11 @@
 
     <div id="skills" class="container mt-5 pt-5 mb-5">
       <h1 class="text-warning mb-3 pb-2">Skills</h1>
-      <div id="skill-bar-wrapper" class="row text-left text-primary">
+      <div id="skill-bar-wrapper" class="row text-left text-white">
 
+        <div class="col-12">
+          <h3 class="text-center">Backend</h3>
+        </div>
         <div class="col-12 col-sm-6">
           <strong>PHP<span style="float:right;">85%</span></strong>
           <div class="skillbar-container clearfix" data-percent="85%">
@@ -147,6 +147,9 @@
           </div>
         </div>
 
+        <div class="col-12">
+          <h3 class="text-center">DBMS</h3>
+        </div>
         <div class="col-12 col-sm-6">
           <strong>PostgreSQL<span style="float:right;">85%</span></strong>
           <div class="skillbar-container clearfix" data-percent="85%">
@@ -168,12 +171,125 @@
           </div>
         </div>
 
+        <div class="col-12">
+          <h3 class="text-center">Frontend</h3>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>jQuery<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>Bootstrap<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>vueJs<span style="float:right;">75%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="75%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>Vuetify<span style="float:right;">75%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="75%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <h3 class="text-center">API</h3>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>Google Calender<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>Razorpay<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>SendGrid<span style="float:right;">75%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="75%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>ZOOM<span style="float:right;">80%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="80%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>Google Drive<span style="float:right;">50%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="50%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <h3 class="text-center">Framework</h3>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>ExpressJS<span style="float:right;">80%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="80%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>CodeIgniter<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>NuxtJS<span style="float:right;">80%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="80%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <h4 class="text-center">Other Tools</h4>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>GIT<span style="float:right;">80%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="80%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <strong>Unix Shells (Bash)<span style="float:right;">70%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="70%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
 </body>
 <script>
   $(document).ready(function(){
+    var i = 0;
+    var typeWriter_txt = 'Software Engineer & Fullstack Developer.'; /* The text */
+    var speed = 200; /* The speed/duration of the effect in milliseconds */
+
+    const typeWriter = () => {
+      if (i < typeWriter_txt.length) {
+        $('#typing').text($('#typing').text()+typeWriter_txt.charAt(i));
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    };
+    typeWriter();
+
     $(window).scroll(function() {
         var hT = $('#skill-bar-wrapper').offset().top,
             hH = $('#skill-bar-wrapper').outerHeight(),

@@ -66,27 +66,6 @@ body {
   border-radius: 0.5rem;
 }
 
-/* Animation */
-.typing {
-  border-right: solid 3px rgba(0,255,0,.75);
-  white-space: nowrap;
-  overflow: hidden;
-  color: #f5ba09;
-  animation: animated-text 8s steps(40,end) 1s 1 normal both,
-             animated-cursor 600ms steps(40,end) infinite;
-}
-
-/* text animation */
-@keyframes animated-text{
-  from{width: 0;}
-  to{width: 645px;}
-}
-
-@keyframes animated-cursor{
-  from{border-right-color: rgba(0,255,0,.75);}
-  to{border-right-color: transparent;}
-}
-
 /* skills */
 .skillbar-container {
   position:relative;
@@ -102,4 +81,34 @@ body {
   height:35px;
   height:5px;
   width:0px;
+}
+
+
+.blinking-cursor {
+  font-weight: 100;
+  font-size: 30px;
+  color: #ffffff;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: rgb(255, 255, 255);
+  }
+}
+
+@-moz-keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: rgb(255, 255, 255);
+  }
 }
