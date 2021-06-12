@@ -66,29 +66,40 @@ body {
   border-radius: 0.5rem;
 }
 
-/* typing text */
+/* Animation */
 .typing {
-  position: relative;
-  color: #f5ba09;
+  border-right: solid 3px rgba(0,255,0,.75);
+  white-space: nowrap;
   overflow: hidden;
+  color: #f5ba09;
+  animation: animated-text 8s steps(40,end) 1s 1 normal both,
+             animated-cursor 600ms steps(40,end) infinite;
 }
-.typing::after {
-  content: "|";
-  position: absolute;
-  right: 0;
+
+/* text animation */
+@keyframes animated-text{
+  from{width: 0;}
+  to{width: 645px;}
+}
+
+@keyframes animated-cursor{
+  from{border-right-color: rgba(0,255,0,.75);}
+  to{border-right-color: transparent;}
+}
+
+/* skills */
+.skillbar-container {
+  position:relative;
+  display:block;
+  margin-bottom: 15px;   
   width: 100%;
-  color: white;
-  background: #1f2235;
-  animation: typing 8s steps(40) forwards, caret 2s infinite;
+  background-color: #666463;
+  height:35px;
+  height:5px;
 }
-@keyframes typing {
-  to {
-    width: 0;
- }
+  
+.skills {
+  height:35px;
+  height:5px;
+  width:0px;
 }
-@keyframes caret {
-  50% {
-    color: transparent;
- }
-}
-/* typing text */

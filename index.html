@@ -19,7 +19,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Font Awesome -->
     <script t src="https://kit.fontawesome.com/996973c893.js"></script>
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css?v2.0">
     
 </head>
 <body>  
@@ -74,17 +74,17 @@
     <!-- About Section -->
     <div id="about" class="container about p-5">
         <div class="row">
-            <div class="col-6">
-            <img src="./assets/img/about_img.svg" class="img-fluid" />
+            <div class="col-md-6 col-12">
+              <img src="./assets/img/about_img.svg" class="img-fluid" />
             </div>
-            <div class="col-6 pl-5 pt-5 pb-5 text-white">
-            <h3 class="text-warning">About Me</h3>
-            <h1 class="m-heading">A little bit about me</h1>
-            <p>
-              A passionate Software Engineer working in the software industry for the past <b class="text-warning">2 years</b> on the latest technology. who understands how frontend & backend works.
-            </p>
-            <p>Worked mostly on <b class="text-warning">NodeJS & PHP</b> as backend. <b class="text-warning">Postgresql, MySQL & MongoDB</b> as DBMS. <b class="text-warning">Bootstrap, Vuetify, jquery & vueJs</b> as frontend.</p>
-            <p>Hands-on in the cloud where I <b class="text-warning">managed & configured DNS records in Cloudflare</b> and enabling <b class="text-warning">SSL certificate for domains</b> and installing & managing required packages & tools in the VM for the web app.</p>
+            <div class="col-md-6 col-12 pl-md-5 pl-0 pt-5 pb-md-5 pb-0 text-white text-justify">
+              <h3 class="text-warning">About Me</h3>
+              <h1 class="m-heading">A little bit about me</h1>
+              <p>
+                A passionate Software Engineer working in the software industry for the past <b class="text-warning">2 years</b> on the latest technology. who understands how frontend & backend works.
+              </p>
+              <p>Worked mostly on <b class="text-warning">NodeJS & PHP</b> as backend. <b class="text-warning">Postgresql, MySQL & MongoDB</b> as DBMS. <b class="text-warning">Bootstrap, Vuetify, jquery & vueJs</b> as frontend.</p>
+              <p>Hands-on in the cloud where I <b class="text-warning">managed & configured DNS records in Cloudflare</b> and enabling <b class="text-warning">SSL certificate for domains</b> and installing & managing required packages & tools in the VM for the web app.</p>
             </div>
         </div>
     </div>
@@ -94,8 +94,8 @@
     <div id="projects" class="container mt-5 pt-5">
       <h1 class="text-warning mb-3 pb-2">Professional Projects</h1>
       <div class="row">
-        <div class="col-4 mb-5">
-          <div class="card" style="width: 18rem;">
+        <div class="col-md-4 col-12 mb-5">
+          <div class="card">
             <img
               src="./assets/img/gradskey.svg"
               class="card-img-top"
@@ -111,17 +111,17 @@
             </div>
           </div>
         </div>
-        <div class="col-4 mb-5">
-          <div class="card" style="width: 18rem;">
+        <div class="col-md-4 col-12 mb-5">
+          <div class="card">
             <img
               src="./assets/img/diab.jpg"
-              class="card-img-top px-3"
+              class="card-img-top"
               style="height: 13rem;"
               alt="Diabwellness Logo"
             />
             <div class="card-body">
               <h5 class="card-title text-primary">Diabwellness</h5>
-              <p class="card-text">Diabetic patient management app. where patient can view & download an prescription & bills, etc.</p>
+              <p class="card-text">Diabetic patient management app. where patient can view & download their prescription, bills, reports, etc.</p>
               <a href="https://app.karunyasugalaya.co.in/" target="_blank" class="btn btn-warning">See Project</a>
             </div>
           </div>
@@ -129,5 +129,64 @@
       </div>
     </div>
 
+    <div id="skills" class="container mt-5 pt-5 mb-5">
+      <h1 class="text-warning mb-3 pb-2">Skills</h1>
+      <div id="skill-bar-wrapper" class="row text-left text-primary">
+
+        <div class="col-12 col-sm-6">
+          <strong>PHP<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+        
+        <div class="col-12 col-sm-6">
+          <strong>NodeJS<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <strong>PostgreSQL<span style="float:right;">85%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="85%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <strong>MySQL<span style="float:right;">75%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="75%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <strong>MongoDB<span style="float:right;">60%</span></strong>
+          <div class="skillbar-container clearfix" data-percent="60%">
+            <div class="skills bg-warning"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
 </body>
+<script>
+  $(document).ready(function(){
+    $(window).scroll(function() {
+        var hT = $('#skill-bar-wrapper').offset().top,
+            hH = $('#skill-bar-wrapper').outerHeight(),
+            wH = $(window).height(),
+            wS = $(this).scrollTop();
+        if (wS > (hT+hH-1.4*wH)){
+                $('.skillbar-container').each(function(){
+                    $(this).find('.skills').animate({
+                        width:$(this).attr('data-percent')
+                    }, 5000); // 5 seconds
+                });
+        }
+    });
+  });
+</script>
 </html>
