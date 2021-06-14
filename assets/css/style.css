@@ -4,7 +4,7 @@ html {
 
 body {
   background: #1f2235;
-  font-family: "Baloo Tamma 2", cursive;
+  font-family: "PT Sans", sans-serif;
 }
 
 /* Main Heading Font */
@@ -111,4 +111,9 @@ body {
   50% {
     color: rgb(255, 255, 255);
   }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }

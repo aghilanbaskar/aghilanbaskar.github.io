@@ -11,14 +11,11 @@
     <meta name="description" content="Aghilan Baskar is a Software Engineer & Full Stack developer who have deep knoweddge in Web development">
     <meta name="author" content="Aghilan Baskar">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preload" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="preload" href="./assets/css/style.css?v3.0" as="style" onload="this.rel='stylesheet'">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Font Awesome -->
-    <script t src="https://kit.fontawesome.com/996973c893.js"></script>
-    <link rel="stylesheet" href="./assets/css/style.css?v2.0">
+    <script defer src="https://kit.fontawesome.com/996973c893.js"></script>
     
 </head>
 <body>  
@@ -65,7 +62,7 @@
             <h2 class="text-warning"><span id='typing'></span><span class="blinking-cursor">|</span></h2>
             </div>
             <div class="col-md-3 col-12  d-md-block d-none">
-            <img src="./assets/img/profile.jpg" alt="profile picture" class="h-auto d-inline-block avatar-img img-thumbnail rounded-circle border border-4 border-body"/>
+            <img width="400px" height="400px" src="./assets/img/profile.jpg" alt="profile picture" class="h-auto d-inline-block avatar-img img-thumbnail rounded-circle border border-4 border-body"/>
             </div>
         </div>
     </div>
@@ -74,7 +71,7 @@
     <div id="about" class="container about p-5">
         <div class="row">
             <div class="col-md-6 col-12">
-              <img src="./assets/img/about_img.svg" alt="about img" class="img-fluid" />
+              <img width="711px" height="670px" src="./assets/img/about_img.svg" alt="about img" class="img-fluid" />
             </div>
             <div class="col-md-6 col-12 pl-md-5 pl-0 pt-5 pb-md-5 pb-0 text-white text-justify">
               <h3 class="text-warning">About Me</h3>
@@ -99,6 +96,7 @@
             </div>
             <img
               src="./assets/img/gradskey.svg"
+              width="500px" height="323px"
               class="card-img-top"
               alt="Gradskey Logo"
             />
@@ -117,6 +115,7 @@
             </div>
             <img
               src="./assets/img/diab.jpg"
+              width="512px" height="512px"
               class="card-img-top px-5"
               alt="Diabwellness Logo"
             />
@@ -136,6 +135,7 @@
             </div>
             <img
               src="./assets/img/centos.svg"
+              width="256px" height="256px"
               class="card-img-top"
               alt="centos Logo"
             />
@@ -154,6 +154,7 @@
             </div>
             <img
               src="./assets/img/zoom.svg"
+              width="64px" height="64px"
               class="card-img-top px-5"
               alt="Zoom Logo"
             />
@@ -170,12 +171,13 @@
             </div>
             <img
               src="./assets/img/zoho.svg"
+              width="290px" height="100px"
               class="card-img-top px-5"
               alt="Zoho mail cli"
             />
             <div class="card-body d-flex flex-column">
               <p class="card-text">Zoho mail client is a node CLI to authenticate, read account and message data from Zoho mail</p>
-              <a href="https://github.com/aghilanbaskar/zoom-php" target="_blank" class="btn btn-warning mt-auto">See Project</a>
+              <a href="https://github.com/aghilanbaskar/zoho-mail-cli" target="_blank" class="btn btn-warning mt-auto">See Project</a>
             </div>
           </div>
         </div>
@@ -193,6 +195,7 @@
             </div>
             <img
               src="https://miro.medium.com/max/566/1*0ywNodCgpFq9NxDJHCY0rQ.png"
+              width="453px" height="187px"
               class="card-img-top"
               alt="medium icon"
             />
@@ -211,6 +214,7 @@
             </div>
             <img
               src="https://geekflare.com/wp-content/uploads/2020/05/zerossl-apache-nginx.jpg"
+              width="1200px" height="385px"
               class="card-img-top"
               alt="Geekflare icon"
             />
@@ -227,6 +231,7 @@
             </div>
             <img
               src="./assets/img/vue.png"
+              width="321px" height="157px"
               class="card-img-top"
               alt="blogspot icon"
             />
@@ -390,33 +395,55 @@
 
 </body>
 <script>
-  $(document).ready(function(){
+  window.onload = () => {
+    const skillbar_container_class = document.querySelectorAll(".skillbar-container");
+    const typing_id = document.getElementById("typing");
     var i = 0;
     var typeWriter_txt = 'Software Engineer & Fullstack Developer.'; /* The text */
-    var speed = 200; /* The speed/duration of the effect in milliseconds */
 
     const typeWriter = () => {
       if (i < typeWriter_txt.length) {
-        $('#typing').text($('#typing').text()+typeWriter_txt.charAt(i));
+        typing_id.innerText = typing_id.innerText+typeWriter_txt.charAt(i);
         i++;
-        setTimeout(typeWriter, speed);
+        setTimeout(typeWriter, 200);
       }
+    };
+    const isInViewport = (el) => {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+
+        );
+    };
+    const animate = (elem, width_percent) => {
+        let width = 0
+        function frame() {
+            elem.style.width = (width++)+'%' // show frame
+            if (width+'%' == width_percent)  // check finish condition
+                clearInterval(id);
+        }
+        let id = setInterval(frame, 10) // draw every 10ms
     };
     typeWriter();
 
-    $(window).scroll(function() {
-        var hT = $('#skill-bar-wrapper').offset().top,
-            hH = $('#skill-bar-wrapper').outerHeight(),
-            wH = $(window).height(),
-            wS = $(this).scrollTop();
-        if (wS > (hT+hH-1.4*wH)){
-                $('.skillbar-container').each(function(){
-                    $(this).find('.skills').animate({
-                        width:$(this).attr('data-percent')
-                    }, 5000); // 5 seconds
-                });
-        }
-    });
-  });
+    var timer = null;
+    window.addEventListener("scroll", () => {
+      if(timer !== null) {
+          clearTimeout(timer);        
+      }
+      timer = setTimeout(function() {
+        skillbar_container_class.forEach((element) => {
+          if(isInViewport(element)){
+            animate(element.querySelector('.skills'), element.getAttribute('data-percent'));
+          } else {
+            element.querySelector('.skills').style.width = '0%';
+          }
+        });
+      }, 150);
+    }, false);
+  };
 </script>
 </html>
