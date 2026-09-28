@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inverter &amp; Battery Calculator</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔌</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0A0E17;
+    --panel:#121826;
+    --panel-2:#161E30;
+    --line:#232C42;
+    --text:#E7ECF5;
+    --muted:#7C8AA3;
+    --amber:#F2A93B;
+    --amber-dim:#7A5A22;
+    --teal:#35D0BA;
+    --red:#F2545B;
+    --green:#3FCB6E;
+  }
+  html,body{
+    background:var(--bg);
+    color:var(--text);
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit}
+  body{
+    font-family:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  }
+  .mono{
+    font-family:'Share Tech Mono',ui-monospace,monospace;
+  }
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+  }
+  .row-line{
+    border-bottom:1px solid var(--line);
+  }
+  .row-line:last-child{ border-bottom:none; }
+  .stepper-btn{
+    width:2rem;height:2rem;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);
+    color:var(--text);
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .stepper-btn:hover{ border-color:var(--amber); color:var(--amber); }
+  .stepper-btn:active{ transform:translateY(1px); }
+  .digit{
+    font-family:'Share Tech Mono',monospace;
+    color:var(--amber);
+    text-shadow:0 0 14px rgba(242,169,59,.35);
+    letter-spacing:0.02em;
+  }
+  .digit-teal{
+    color:var(--teal);
+    text-shadow:0 0 14px rgba(53,208,186,.35);
+  }
+  input[type="range"]{
+    -webkit-appearance:none;
+    height:3px;
+    background:var(--line);
+    border-radius:999px;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:16px;height:16px;border-radius:999px;
+    background:var(--amber);
+    box-shadow:0 0 10px rgba(242,169,59,.6);
+    cursor:pointer;
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:16px;height:16px;border-radius:999px;
+    background:var(--amber);border:none;
+    box-shadow:0 0 10px rgba(242,169,59,.6);
+    cursor:pointer;
+  }
+  .health-track{
+    height:6px;
+    background:var(--line);
+    overflow:hidden;
+  }
+  .health-fill{ transition:width .25s ease, background-color .25s ease; }
+  .field{
+    background:var(--bg);
+    border:1px solid var(--line);
+    color:var(--text);
+  }
+  .field:focus{ outline:none; border-color:var(--amber); }
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background:var(--line); }
+  details > summary{ cursor:pointer; list-style:none; }
+  details > summary::-webkit-details-marker{ display:none; }
+</style>
+</head>
+<body>
+<div id="app" class="min-h-screen">
+
+  <header class="px-5 lg:px-10 pt-10 pb-6 max-w-[1200px] mx-auto">
+    <p class="mono text-xs tracking-wide" style="color:var(--muted)">Load calculator</p>
+    <h1 class="text-3xl lg:text-4xl font-semibold mt-1">Inverter &amp; battery calculator</h1>
+    <p class="mt-2 max-w-[60ch]" style="color:var(--muted)">
+      Add what you'll run during a power cut. The panel on the side works like your
+      inverter's own display — it updates live as you go.
+    </p>
+  </header>
+
+  <main class="max-w-[1200px] mx-auto px-5 lg:px-10 pb-20 grid gap-8 lg:grid-cols-[1fr,380px]">
+
+    <!-- APPLIANCE LIST -->
+    <section>
+      <div v-for="cat in categories" :key="cat.key" class="mb-8">
+        <div class="flex items-baseline justify-between mb-2">
+          <h2 class="text-sm font-medium" style="color:var(--muted)">{{ cat.label }}</h2>
+          <span class="mono text-xs" style="color:var(--muted)">power factor {{ cat.pf.toFixed(1) }}</span>
+        </div>
+        <div class="panel">
+          <div v-for="item in itemsIn(cat.key)" :key="item.id"
+               class="row-line flex items-center gap-3 px-4 py-3">
+            <div class="flex-1 min-w-0">
+              <p class="truncate">{{ item.name }}</p>
+            </div>
+            <span class="mono text-sm w-16 text-right" style="color:var(--muted)">{{ item.watts }}W</span>
+            <div class="flex items-center gap-2">
+              <button class="stepper-btn" @click="dec(item)">−</button>
+              <span class="mono w-6 text-center">{{ item.qty }}</span>
+              <button class="stepper-btn" @click="inc(item)">+</button>
+            </div>
+            <button v-if="item.custom" @click="removeItem(item.id)"
+                    class="text-sm w-6 text-center" style="color:var(--muted)">✕</button>
+            <span v-else class="w-6"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD CUSTOM -->
+      <div class="mb-8">
+        <h2 class="text-sm font-medium mb-2" style="color:var(--muted)">Add your own — pedestal fan, monitor, anything</h2>
+        <div class="panel p-4 grid gap-3 sm:grid-cols-[1fr,90px,70px,140px,auto]">
+          <input v-model="draft.name" type="text" placeholder="e.g. Pedestal fan"
+                 class="field px-3 py-2 text-sm">
+          <input v-model.number="draft.watts" type="number" min="1" placeholder="Watts"
+                 class="field px-3 py-2 text-sm">
+          <input v-model.number="draft.qty" type="number" min="1" placeholder="Qty"
+                 class="field px-3 py-2 text-sm">
+          <select v-model="draft.category" class="field px-3 py-2 text-sm">
+            <option value="lighting">Lighting</option>
+            <option value="motor">Fan / motor</option>
+            <option value="electronics">Electronics</option>
+          </select>
+          <button @click="addCustom"
+                  class="px-4 py-2 text-sm font-medium"
+                  style="background:var(--amber);color:#1a1305">Add</button>
+        </div>
+        <p class="text-xs mt-2" style="color:var(--muted)">
+          Not sure which category? Anything with a motor or compressor → "Fan / motor".
+          Chargers, TVs, routers → "Electronics". Bulbs and tubelights → "Lighting".
+        </p>
+      </div>
+    </section>
+
+    <!-- READOUT PANEL -->
+    <aside class="lg:sticky lg:top-6 self-start">
+      <div class="panel p-5">
+
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-2 h-2 rounded-full" :style="{background: hasLoad ? 'var(--green)' : 'var(--line)'}"></span>
+          <span class="mono text-xs" style="color:var(--muted)">{{ hasLoad ? 'reading live load' : 'no appliances selected' }}</span>
+        </div>
+
+        <!-- TOTAL LOAD -->
+        <div class="mb-5">
+          <p class="text-xs mb-1" style="color:var(--muted)">Total load</p>
+          <p class="digit text-4xl">{{ realWatts }}<span class="text-lg ml-1">W</span></p>
+        </div>
+
+        <div class="row-line mb-5"></div>
+
+        <!-- VA -->
+        <div class="mb-4">
+          <p class="text-xs mb-1" style="color:var(--muted)">Inverter capacity needed</p>
+          <p class="digit text-4xl" v-if="hasLoad">{{ recommendedVA }}<span class="text-lg ml-1">VA</span></p>
+          <p class="digit text-4xl" v-else>—</p>
+          <p class="text-xs mt-1" style="color:var(--muted)" v-if="hasLoad">
+            ≈ {{ invCapacityW }}W usable, incl. surge margin
+          </p>
+        </div>
+
+        <div v-if="hasLoad" class="mb-2">
+          <div class="health-track">
+            <div class="health-fill h-full" :style="{width: healthPct + '%', background: healthColor}"></div>
+          </div>
+          <p class="text-xs mt-1" style="color:var(--muted)">{{ healthLabel }}</p>
+        </div>
+
+        <details class="mb-5">
+          <summary class="text-xs mono mt-2" style="color:var(--teal)">how this is worked out</summary>
+          <p class="text-xs mt-2 leading-relaxed" style="color:var(--muted)">
+            Each appliance's watts is divided by its power factor to get VA
+            (motors and electronics need more supply than they use as work).
+            Raw need here is {{ rawVA }}VA — we add ~15% headroom for fan
+            startup surge, then round up to a standard inverter size.
+          </p>
+        </details>
+
+        <div class="row-line mb-5"></div>
+
+        <!-- BACKUP HOURS -->
+        <div class="mb-5">
+          <div class="flex items-center justify-between mb-2">
+            <p class="text-xs" style="color:var(--muted)">How long should power last?</p>
+            <span class="mono text-sm digit-teal">{{ hours }}h</span>
+          </div>
+          <input type="range" min="1" max="12" step="0.5" v-model.number="hours" class="w-full">
+        </div>
+
+        <!-- BATTERY -->
+        <div class="mb-2">
+          <p class="text-xs mb-1" style="color:var(--muted)">Battery capacity needed</p>
+          <p class="digit-teal text-4xl mono" v-if="hasLoad">
+            {{ battery.banks > 1 ? battery.banks + ' × ' : '' }}{{ battery.ah }}<span class="text-lg ml-1">Ah</span>
+          </p>
+          <p class="digit-teal text-4xl mono" v-else>—</p>
+          <p class="text-xs mt-1" style="color:var(--muted)" v-if="hasLoad">
+            gives ~{{ battery.actualHours }}h at this load
+          </p>
+        </div>
+
+        <p v-if="hasLoad && battery.banks > 1" class="text-xs mt-3 p-3" style="color:var(--amber);background:rgba(242,169,59,.08);border:1px solid var(--amber-dim)">
+          This needs {{ battery.banks }} batteries in parallel. Confirm your inverter
+          explicitly supports multiple batteries before buying — most home inverters
+          only take one.
+        </p>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <footer class="max-w-[1200px] mx-auto px-5 lg:px-10 pb-10">
+    <p class="text-xs" style="color:var(--muted)">
+      Figures are planning estimates using standard assumptions (0.8 battery usable capacity, 12V system).
+      Confirm final sizing with your dealer or electrician before buying.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+const { createApp, reactive, computed } = Vue;
+
+createApp({
+  setup(){
+
+    const categories = [
+      { key:'lighting',   label:'Lighting',        pf:1.0 },
+      { key:'motor',      label:'Fans & motors',   pf:0.8 },
+      { key:'electronics',label:'Electronics',     pf:0.9 },
+    ];
+    const pfMap = Object.fromEntries(categories.map(c=>[c.key,c.pf]));
+
+    const appliances = reactive([
+      { id:'l1', name:'LED tubelight',        watts:20,  qty:0, category:'lighting' },
+      { id:'l2', name:'LED bulb',             watts:9,   qty:0, category:'lighting' },
+      { id:'l3', name:'CFL bulb',             watts:15,  qty:0, category:'lighting' },
+
+      { id:'m1', name:'Ceiling fan',          watts:75,  qty:0, category:'motor' },
+      { id:'m2', name:'Pedestal / table fan', watts:55,  qty:0, category:'motor' },
+      { id:'m3', name:'Exhaust fan',          watts:40,  qty:0, category:'motor' },
+      { id:'m4', name:'Refrigerator',         watts:150, qty:0, category:'motor' },
+      { id:'m5', name:'Mixer grinder',        watts:500, qty:0, category:'motor' },
+      { id:'m6', name:'Washing machine',      watts:500, qty:0, category:'motor' },
+      { id:'m7', name:'Water motor / pump',   watts:750, qty:0, category:'motor' },
+
+      { id:'e1', name:'WiFi router',          watts:15,  qty:0, category:'electronics' },
+      { id:'e2', name:'LED TV',               watts:60,  qty:0, category:'electronics' },
+      { id:'e3', name:'Laptop charger',       watts:65,  qty:0, category:'electronics' },
+      { id:'e4', name:'Desktop monitor',      watts:40,  qty:0, category:'electronics' },
+      { id:'e5', name:'Set-top box',          watts:15,  qty:0, category:'electronics' },
+      { id:'e6', name:'Mobile charger',       watts:10,  qty:0, category:'electronics' },
+    ]);
+
+    const draft = reactive({ name:'', watts:null, qty:1, category:'motor' });
+
+    function itemsIn(catKey){
+      return appliances.filter(a => a.category === catKey);
+    }
+
+    function inc(item){ item.qty++; }
+    function dec(item){ if(item.qty>0) item.qty--; }
+
+    function addCustom(){
+      if(!draft.name || !draft.watts || draft.watts<=0) return;
+      appliances.push({
+        id:'c'+Date.now(),
+        name: draft.name,
+        watts: draft.watts,
+        qty: draft.qty && draft.qty>0 ? draft.qty : 1,
+        category: draft.category,
+        custom:true
+      });
+      draft.name=''; draft.watts=null; draft.qty=1;
+    }
+
+    function removeItem(id){
+      const idx = appliances.findIndex(a=>a.id===id);
+      if(idx>-1) appliances.splice(idx,1);
+    }
+
+    const hasLoad = computed(()=> appliances.some(a=>a.qty>0));
+
+    const realWatts = computed(()=>
+      Math.round(appliances.reduce((sum,a)=> sum + a.qty*a.watts, 0))
+    );
+
+    const rawVA = computed(()=>
+      Math.round(appliances.reduce((sum,a)=> sum + (a.qty*a.watts)/pfMap[a.category], 0))
+    );
+
+    const vaClasses = [500,650,700,850,900,1000,1100,1500,1600,2000,2500,3000,3500,5000];
+
+    const recommendedVA = computed(()=>{
+      const target = rawVA.value * 1.15;
+      const found = vaClasses.find(v => v >= target);
+      return found || Math.ceil(target/500)*500;
+    });
+
+    const invCapacityW = computed(()=> Math.round(recommendedVA.value * 0.8));
+
+    const healthPct = computed(()=>{
+      if(!hasLoad.value) return 0;
+      const pct = (realWatts.value / invCapacityW.value) * 100;
+      return Math.min(pct, 100);
+    });
+
+    const healthColor = computed(()=>{
+      const p = healthPct.value;
+      if(p < 60) return 'var(--green)';
+      if(p < 85) return 'var(--amber)';
+      return 'var(--red)';
+    });
+
+    const healthLabel = computed(()=>{
+      const p = healthPct.value;
+      if(p < 60) return 'comfortable headroom for surge';
+      if(p < 85) return 'adequate headroom';
+      return 'tight — consider the next size up';
+    });
+
+    const hours = Vue.ref(3);
+
+    const ahClasses = [100,120,135,150,165,180,200,220,230];
+    const maxSingleAh = 230;
+
+    const battery = computed(()=>{
+      if(!hasLoad.value){
+        return { ah:0, banks:1, actualHours:0 };
+      }
+      const rawAh = (realWatts.value * hours.value) / (12 * 0.8);
+
+      if(rawAh <= maxSingleAh){
+        const ah = ahClasses.find(a => a >= rawAh) || maxSingleAh;
+        const actualHours = ((ah*12*0.8)/realWatts.value).toFixed(1);
+        return { ah, banks:1, actualHours };
+      } else {
+        const banks = Math.ceil(rawAh/200);
+        const actualHours = ((200*banks*12*0.8)/realWatts.value).toFixed(1);
+        return { ah:200, banks, actualHours };
+      }
+    });
+
+    return {
+      categories, draft, hours,
+      itemsIn, inc, dec, addCustom, removeItem,
+      hasLoad, realWatts, rawVA, recommendedVA, invCapacityW,
+      healthPct, healthColor, healthLabel,
+      battery
+    };
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
