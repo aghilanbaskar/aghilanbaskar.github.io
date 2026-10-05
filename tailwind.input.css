@@ -1,0 +1,146 @@
+/*
+  Tailwind source for the portfolio + resume pages.
+  Regenerate assets/css/style.css after editing classes in any page:
+    npx @tailwindcss/cli -i tailwind.input.css -o assets/css/style.css --minify
+*/
+@import "tailwindcss";
+
+@source "./index.html";
+@source "./resume/index.html";
+@source not "./inverter-battery-calculator";
+
+/* Theme colours come from CSS variables so one set of utilities serves both themes */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+}
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b0f17;
+  --surface: #111725;
+  --elevated: #172033;
+  --line: #243049;
+  --fg: #e6ebf5;
+  --muted: #9aa6bd;
+  --accent: #fbbf24;
+  --accent-fg: #1a1203;
+  --accent-soft: rgb(251 191 36 / 0.12);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fafaf7;
+  --surface: #ffffff;
+  --elevated: #f3f2ec;
+  --line: #e3e1d8;
+  --fg: #16181d;
+  --muted: #5b6170;
+  --accent: #b45309;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(180 83 9 / 0.1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-surface transition-[border-color,transform] duration-200;
+  }
+  a.card:hover,
+  .card-hover:hover {
+    @apply -translate-y-0.5 border-accent;
+  }
+  .tag {
+    @apply inline-flex items-center rounded-full border border-line bg-elevated px-2.5 py-0.5 font-mono text-xs text-muted;
+  }
+  .eyebrow {
+    @apply font-mono text-sm tracking-wide text-accent;
+  }
+  .section-title {
+    @apply mt-1 text-3xl font-bold tracking-tight sm:text-4xl;
+  }
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors;
+  }
+  .btn-primary {
+    @apply bg-accent text-accent-fg hover:opacity-90;
+  }
+  .btn-ghost {
+    @apply border border-line text-fg hover:border-accent hover:text-accent;
+  }
+  .nav-link {
+    @apply rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:text-fg;
+  }
+  .nav-link.active {
+    @apply bg-accent-soft text-accent;
+  }
+  .bullets > li {
+    @apply relative pl-5;
+  }
+  .bullets > li::before {
+    content: "";
+    @apply absolute left-0 top-[0.62em] h-1.5 w-1.5 rounded-full bg-accent;
+  }
+  .link {
+    @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
+  }
+}
+
+/* Reveal-on-scroll: content is visible by default; JS opts in by adding .js on <html> */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+.caret {
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .caret { animation: none; }
+  *, *::before, *::after { transition-duration: 0s !important; }
+}
