@@ -127,7 +127,7 @@
         <p class="eyebrow">// about</p>
         <h2 class="section-title">A little bit about me</h2>
         <div class="mt-6 space-y-4 text-muted">
-          <p>I'm a backend engineer who likes owning systems end to end, from high-level design and schema to vendor API contracts and rollout. I've spent <strong class="text-fg">7+ years</strong> building systems where correctness matters: <strong class="text-fg">wallets, payments, payouts and notifications</strong>.</p>
+          <p>I'm a backend engineer who likes owning systems end to end, from high-level design and schema to vendor API contracts and rollout. I've spent <strong class="text-fg">7+ years</strong> building systems where correctness matters: <strong class="text-fg">notifications, integrations, wallets, payments, payouts</strong>.</p>
           <p>At <strong class="text-fg">mFine</strong> I lead a team of 2–4 backend engineers building RBI-compliant wallet and QR payment flows for 10M+ users. Before that, at <strong class="text-fg">HighLevel</strong>, I ran a 50M+ event notification service and owned the Meta and Google integrations for the CRM.</p>
           <p>Lately I've been building <strong class="text-fg">AI agents</strong> with LangGraph and LangChain, and using Claude Code for day-to-day AI-assisted development across my team.</p>
         </div>
@@ -437,8 +437,9 @@
     // Typewriter: initial text is server-rendered; animation starts after load
     if (reduce) return;
     var el = document.getElementById('typing');
-    var phrases = ['Node.js · MongoDB · Redis · AWS', 'Wallets, payments & payouts', 'System design (HLD/LLD)', 'Building AI agents with LangGraph'];
+    var phrases = ['Node.js · MongoDB · Redis · AWS · React', 'Notification, Integrations, Wallets, payments & payouts', 'System design (HLD/LLD)', 'Building AI agents with LangGraph'];
     var p = 0, i = phrases[0].length, deleting = true;
+
     function tick() {
       var text = phrases[p];
       if (deleting) {
